@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>두 힘의 평형 모의 실험</title>
+<style>
+:root{--ink:#1C2340;--mute:#5B6384;--line:#E3E7F1;--card:#fff;--paper:#F4F6FB;--sun:#F08A24;--sun-deep:#C9670C}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;-webkit-text-size-adjust:100%}
+main{max-width:1100px;margin:0 auto;padding:16px}
+.k{font-weight:700;font-size:14px;color:var(--sun);letter-spacing:.06em}
+h1{font-size:clamp(22px,4vw,34px);margin:4px 0 10px}
+h1 em{font-style:normal;color:var(--sun)}
+.how{background:var(--card);border-radius:16px;padding:12px 16px;margin-bottom:12px;box-shadow:0 1px 0 var(--line);font-size:15px;line-height:1.6}
+.how ol{margin:4px 0 0;padding-left:20px}
+.sim{background:var(--card);border-radius:20px;box-shadow:0 1px 0 var(--line);padding:12px 14px 16px}
+.simsvg{display:block;width:100%;height:auto}
+.simctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px}
+.simctl .grp{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.simctl .lb{font-weight:800;font-size:15px;white-space:nowrap;min-width:150px}
+.simctl .bs{display:flex;gap:6px;flex-wrap:wrap}
+.simctl button{font:inherit;font-weight:800;font-size:16px;padding:10px 14px;min-height:44px;border-radius:12px;border:0;background:#EEF1F8;color:var(--ink);cursor:pointer;touch-action:manipulation}
+.simctl button.on{background:var(--ink);color:#fff}
+.simctl button.go{background:var(--sun);color:#fff;padding:10px 20px}
+.simctl .tg{font-weight:700;font-size:15px;display:flex;align-items:center;gap:6px;cursor:pointer;min-height:44px}
+.simctl .tg input{width:22px;height:22px}
+.st{font-weight:700;font-size:16px;line-height:1.4;color:var(--sun-deep);margin-top:10px;min-height:1.4em}
+.rows{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.foot{font-size:12px;color:var(--mute);margin-top:12px}
+</style></head><body><main>
+<div class="k">18차시 · 교과서 149쪽 · 활동지 ⑤</div>
+<h1>두 힘이 <em>평형</em>을 이루는 조건 알아보기</h1>
+<div class="how"><b>이렇게 해 보자</b><ol>
+<li>왼쪽으로 당기는 힘과 오른쪽으로 당기는 힘을 고른다.</li>
+<li><b>시작</b>을 누르기 전에, 수레가 어느 쪽으로 움직일지 먼저 예상한다.</li>
+<li><b>▶ 시작</b>을 누르고, 두 힘과 수레의 움직임을 <b>활동지 ⑤ 표</b>에 쓴다. <b>↺ 처음으로</b>를 누르고 다른 힘으로 다시 해 본다.</li>
+<li>수레가 <b>움직이지 않을 때</b> 두 힘의 방향과 크기는 어떤지 찾아본다.</li></ol></div>
+<div class="sim" id="simEq">
+<svg viewBox="0 0 1700 400" class="simsvg" aria-label="수레 양쪽에서 줄을 당기는 모의 실험">
+      <rect x="0" y="300" width="1700" height="22" rx="6" fill="#E9DCC8"/>
+      <line x1="0" y1="300" x2="1700" y2="300" stroke="#C9A27A" stroke-width="4"/>
+      <line x1="850" y1="140" x2="850" y2="330" stroke="#AEB7D6" stroke-width="3" stroke-dasharray="10 10"/>
+      <text x="850" y="352" text-anchor="middle" font-size="22" font-weight="700" fill="#5B6384" font-family="inherit">처음 위치</text>
+      <g id="simWorld">
+        <path id="ropeL" fill="none" stroke="#8A6A4A" stroke-width="7" stroke-linecap="round"/><path id="ropeR" fill="none" stroke="#8A6A4A" stroke-width="7" stroke-linecap="round"/>
+        <g id="manL"></g><g id="manR"></g>
+        <g id="cart"><rect x="-110" y="190" width="220" height="90" rx="14" fill="#E3B98C" stroke="#B5844F" stroke-width="5"/>
+          <circle cx="-62" cy="286" r="16" fill="#1C2340"/><circle cx="62" cy="286" r="16" fill="#1C2340"/><text x="0" y="246" text-anchor="middle" font-size="30" font-weight="800" fill="#7A4E22" font-family="inherit">수레</text></g>
+        <g id="arrL"><line id="aLl" stroke="#2F6FE0" stroke-width="14" stroke-linecap="round"/><polygon id="aLh" fill="#2F6FE0"/><text id="aLt" font-size="34" font-weight="900" fill="#2F6FE0" text-anchor="middle" font-family="inherit"></text></g>
+        <g id="arrR"><line id="aRl" stroke="#E0453A" stroke-width="14" stroke-linecap="round"/><polygon id="aRh" fill="#E0453A"/><text id="aRt" font-size="34" font-weight="900" fill="#E0453A" text-anchor="middle" font-family="inherit"></text></g>
+        <g id="arrN" style="display:none"><line id="aNl" stroke="#1C2340" stroke-width="12" stroke-linecap="round"/><polygon id="aNh" fill="#1C2340"/><text id="aNt" font-size="28" font-weight="900" fill="#1C2340" text-anchor="middle" font-family="inherit"></text></g>
+      </g>
+    </svg>
+<div class="rows">
+  <div class="simctl"><div class="grp"><span class="lb" style="color:#2F6FE0">◀ 왼쪽으로 당기는 힘</span><span class="bs" data-side="L"></span></div></div>
+  <div class="simctl"><div class="grp"><span class="lb" style="color:#E0453A">오른쪽으로 당기는 힘 ▶</span><span class="bs" data-side="R"></span></div></div>
+  <div class="simctl"><button type="button" class="go" data-act="start">▶ 시작</button><button type="button" data-act="reset">↺ 처음으로</button><label class="tg"><input type="checkbox" data-act="net"> 알짜힘 보기</label></div>
+</div>
+<div class="st" id="simSt"></div>
+</div>
+<p class="foot">수업용 모의 실험입니다(실제 실험값이 아님). 힘은 0~40 N 중에서 고를 수 있어요. 인터넷 없이 동작하며, 입력한 내용은 어디에도 저장되지 않아요.</p>
+</main>
+<script>
+/* 18차시 모의 실험: 두 힘의 평형 (자료 외 보충). 바깥 인터넷 없이 동작 */
+(function(){
+const root=document.getElementById('simEq'); if(!root) return;
+const $=id=>document.getElementById(id);
+const sec=null;
+const VALS=[0,10,20,30,40], K=6, CX=850, MIN=450, MAX=1250, ROPE=270, GY=300;
+let F={L:20,R:30}, x=CX, v=0, run=false, showNet=false, last=performance.now(), walk=0;
+const NS='http://www.w3.org/2000/svg';
+function mk(tag,at){const e=document.createElementNS(NS,tag);for(const k in at)e.setAttribute(k,at[k]);return e;}
+// 사람: 발(0,GY)을 축으로 기울어짐. dir=+1 이면 수레가 오른쪽에 있음
+function person(g,color,dir){
+  const lean=mk('g',{}), legs=mk('g',{});
+  const L1=mk('line',{stroke:'#1C2340','stroke-width':14,'stroke-linecap':'round'}), L2=mk('line',{stroke:'#1C2340','stroke-width':14,'stroke-linecap':'round'});
+  legs.append(L1,L2);
+  const body=mk('line',{x1:0,y1:236,x2:0,y2:176,stroke:color,'stroke-width':34,'stroke-linecap':'round'});
+  const head=mk('circle',{cx:0,cy:146,r:21,fill:color});
+  const A1=mk('line',{stroke:color,'stroke-width':12,'stroke-linecap':'round'}), A2=mk('line',{stroke:color,'stroke-width':12,'stroke-linecap':'round'});
+  const hand=mk('circle',{r:9,fill:'#F2C9A0'});
+  lean.append(legs,body,A2,head,A1,hand); g.appendChild(lean);
+  return {g,lean,L1,L2,A1,A2,hand,dir};
+}
+const PL=person($('manL'),'#2F6FE0',1), PR=person($('manR'),'#E0453A',-1);
+function rot(px,py,deg){const r=deg*Math.PI/180,dx=px,dy=py-GY;return [dx*Math.cos(r)-dy*Math.sin(r), GY+dx*Math.sin(r)+dy*Math.cos(r)];}
+function pose(P,X,f,t,moving){
+  const d=P.dir;
+  let ang=-d*(f>0?6+f*0.55:0);                       // 힘이 클수록 수레 반대쪽으로 젖힘
+  if(f>0) ang+=-d*Math.sin(t*14)*0.9;                 // 힘주는 떨림
+  P.g.setAttribute('transform',`translate(${X},0)`);
+  P.lean.setAttribute('transform',`rotate(${ang},0,${GY})`);
+  const hx=d*(f>0?60:46), hy=f>0?224:236;              // 손 위치(몸 기준)
+  const s=moving?Math.sin(walk)*16:0;                  // 걸음
+  const fx=d*(f>0?22:10);
+  P.L1.setAttribute('x1',0);P.L1.setAttribute('y1',236);P.L1.setAttribute('x2',fx+s);P.L1.setAttribute('y2',GY);
+  P.L2.setAttribute('x1',0);P.L2.setAttribute('y1',236);P.L2.setAttribute('x2',-fx*0.9-s);P.L2.setAttribute('y2',GY);
+  [P.A1,P.A2].forEach((A,i)=>{A.setAttribute('x1',0);A.setAttribute('y1',184+i*6);A.setAttribute('x2',hx-d*i*14);A.setAttribute('y2',hy);});
+  P.hand.setAttribute('cx',hx);P.hand.setAttribute('cy',hy);
+  const w=rot(hx,hy,ang); return [X+w[0],w[1]];
+}
+function rope(id,h,ex,f){const my=(h[1]+232)/2+(f>0?0:34), mx=(h[0]+ex)/2;
+  $(id).setAttribute('d',`M${h[0]},${h[1]} Q${mx},${my} ${ex},232`);}
+root.querySelectorAll('.bs').forEach(box=>{const s=box.dataset.side;
+  VALS.forEach(n=>{const b=document.createElement('button');b.type='button';b.textContent=n+' N';b.dataset.v=n;
+    b.addEventListener('click',e=>{e.stopPropagation();b.blur();if(run)return;F[s]=n;reset();});box.appendChild(b);});});
+function arrow(l,hd,t,x1,x2,y,label){const d=x2>=x1?1:-1;const len=Math.abs(x2-x1);
+  $(l).setAttribute('x1',x1);$(l).setAttribute('y1',y);$(l).setAttribute('x2',len<1?x1:x2-d*22);$(l).setAttribute('y2',y);$(l).style.visibility=len<1?'hidden':'';
+  $(hd).setAttribute('points',len<1?'':`${x2},${y} ${x2-d*34},${y-20} ${x2-d*34},${y+20}`);
+  $(t).textContent=label;$(t).setAttribute('x',len<1?x1:(x1+x2)/2);$(t).setAttribute('y',y-26);}
+function draw(t){
+  $('cart').setAttribute('transform',`translate(${x},0)`);
+  const lx=x-110, rx=x+110, mv=run&&Math.abs(v)>2;
+  const hL=pose(PL,lx-ROPE,F.L,t,mv), hR=pose(PR,rx+ROPE,F.R,t,mv);
+  rope('ropeL',hL,lx,F.L); rope('ropeR',hR,rx,F.R);
+  arrow('aLl','aLh','aLt',lx,lx-F.L*K,120,F.L+' N');
+  arrow('aRl','aRh','aRt',rx,rx+F.R*K,120,F.R+' N');
+  const net=F.R-F.L; $('arrN').style.display=showNet&&net!==0?'':'none';
+  if(net!==0){const y=50;const x2=x+net*K;const d=net>0?1:-1;$('aNl').setAttribute('x1',x);$('aNl').setAttribute('y1',y);$('aNl').setAttribute('x2',x2-d*20);$('aNl').setAttribute('y2',y);$('aNh').setAttribute('points',`${x2},${y} ${x2-d*30},${y-18} ${x2-d*30},${y+18}`);$('aNt').textContent='알짜힘 '+Math.abs(net)+' N';$('aNt').setAttribute('x',x-d*110);$('aNt').setAttribute('y',y+10);}
+  root.querySelectorAll('.bs').forEach(box=>box.querySelectorAll('button').forEach(b=>b.classList.toggle('on',+b.dataset.v===F[box.dataset.side])));
+}
+function netText(){const n=F.R-F.L;return n===0?'알짜힘 0 N':('알짜힘 '+Math.abs(n)+' N, '+(n>0?'오른쪽':'왼쪽'));}
+function status(s){$('simSt').textContent=s;}
+function reset(){run=false;x=CX;v=0;status(showNet?netText()+' · ▶ 시작을 눌러 보자.':'두 힘을 고르고, 수레가 어느 쪽으로 움직일지 예상해 보자.');}
+function loop(t){const dt=Math.min(0.05,(t-last)/1000);last=t;
+  if(!sec||sec.classList.contains('on')){
+    if(run){v+=(F.R-F.L)*9*dt;x+=v*dt;walk+=Math.min(18,Math.abs(v)*0.06)*dt*6;
+      if(x<=MIN||x>=MAX){x=Math.max(MIN,Math.min(MAX,x));run=false;status((x>=MAX?'오른쪽':'왼쪽')+'으로 끝까지 움직였어요. ↺ 처음으로');}}
+    draw(t/1000);}
+  requestAnimationFrame(loop);}
+root.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;e.stopPropagation();setTimeout(()=>b.blur(),0);
+  const a=b.dataset.act;
+  if(a==='start'){if(run)return;x=CX;v=0;const n=F.R-F.L;
+    if(n===0){status('수레가 움직이지 않아요. 두 힘의 크기가 같고 방향이 반대예요.'+(showNet?' (알짜힘 0 N)':''));return;}
+    run=true;status('수레가 '+(n>0?'오른쪽':'왼쪽')+'으로 움직여요.'+(showNet?' ('+netText()+')':''));}
+  if(a==='reset')reset();
+  if(a==='net'){showNet=b.checked;if(!run)status(showNet?netText():'두 힘을 고르고, 수레가 어느 쪽으로 움직일지 예상해 보자.');}
+});
+requestAnimationFrame(loop);
+})();
+</script>
+</body></html>
